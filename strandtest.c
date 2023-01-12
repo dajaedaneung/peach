@@ -11,6 +11,15 @@ const char* wifi = "bssm_free";
 const char* password = "bssm_free";
 const String url = "http://10.150.150.191:8080/density/all?camera=1";
 
+
+  int R1 = 0;
+  int R2 = 0;
+  int R3 = 0;
+  int G1 = 0;
+  int G2 = 0;
+  int G3 = 0;
+  int delay_time = 100;
+
 WiFiClient wifiClient;
 
 Adafruit_NeoPixel strip1(11, LED_PIN1, NEO_GRB + NEO_KHZ800);
@@ -87,68 +96,61 @@ void loop() {
       Serial.println(cameraId_2 + "와" + code_2);
       Serial.println(cameraId_3 + "와" + code_3);
 
-      
-      if(cameraId_1 == "1"){
-        if(code_1 == "NICE"){
-            for(int j = 0; j < 12; j++){
-              strip1.setPixelColor(j, strip1.Color(0, 255, 0));
-          }
-          strip1.show();
-          }
-          else if(code_1 == "NORMAL"){
-            for(int j = 0; j < 12; j++){
-              strip1.setPixelColor(j, strip1.Color(255, 255, 0));
-            }
-            strip1.show();
-          }
-          else if(code_1 == "WARNING"){
-            for(int j = 0; j < 12; j++){
-              strip1.setPixelColor(j, strip1.Color(255, 0, 0));
-            }
-          strip1.show();
-          }
-      }
 
-      if(cameraId_2 == "2"){
-          if(code_2 == "NORMAL"){
-            for(int j = 0; j < 12; j++){
-              strip2.setPixelColor(j, strip2.Color(255, 255, 0));
-            }
-            strip2.show();
-          }else if(code_2 == "NICE"){
-            for(int j = 0; j < 12; j++){
-              strip2.setPixelColor(j, strip2.Color(0, 255, 0));
-            }
-            strip2.show();
-          }else if(code_2 == "WARNING"){
-            for(int j = 0; j < 12; j++){
-              strip2.setPixelColor(j, strip2.Color(255, 0, 0));
-            }
-            strip2.show();
-          }
-      }
+    if(code_1 == "NICE"){
+      R1 = 0;
+      G1 = 255;
+    }else if(code_1 == "CAUTION"){
+      R1 = 255;
+      G1 = 255;
+    }else{
+      R1 = 255;
+      G1 = 0;
+    }
+
+    if(code_2 == "NICE"){
+      R2 = 0;
+      G2 = 255;
+    }else if(code_2 == "CAUTION"){
+      R2 = 255;
+      G2 = 255;
+    }else{
+      R2 = 255;
+      G2 = 0;
+    }
 
 
-      if(cameraId_3 == "3"){
-          if(code_3 == "WARNING"){
-            for(int j = 0; j < 12; j++){
-              strip3.setPixelColor(j, strip3.Color(255, 0, 0));
-            }
-            strip3.show();
-          }else if(code_3 == "NICE"){
-            for(int j = 0; j < 12; j++){
-              strip3.setPixelColor(j, strip3.Color(0, 255, 0));
-            }
-            strip3.show();
-          }else if(code_3 == "NORMAL"){
-            for(int j = 0; j < 12; j++){
-              strip3.setPixelColor(j, strip3.Color(255, 255, 0));
-            }
-            strip3.show();
-          }
-      }
+    if(code_3 == "NICE"){
+      R3 = 0;
+      G3 = 255;
+    }else if(code_3 == "CAUTION"){
+      R3 = 255;
+      G3 = 255;
+    }else{
+      R3 = 255;
+      G3 = 0;
+    }
 
+  for(int i = 0; i<12; i++){
+      strip1.setPixelColor(i, R1, G1, 0);
+      strip2.setPixelColor(i, R2, G2, 0);
+      strip3.setPixelColor(i, R3, G3, 0);
+      strip1.show();
+      strip2.show();
+      strip3.show();
+      delay(delay_time);
+  }
 
+  
+  for(int i = 0; i<12; i++){
+      strip1.setPixelColor(i, 0, 0, 0);
+      strip2.setPixelColor(i, 0, 0, 0);
+      strip3.setPixelColor(i, 0, 0, 0);
+      strip1.show();
+      strip2.show();
+      strip3.show();
+      delay(delay_time);
+  }
 
     } else {
       // Falls HTTP-Error
@@ -162,5 +164,4 @@ void loop() {
     Serial.printf("HTTP-Verbindung konnte nicht hergestellt werden!");
   }
 
-  delay(10000);  //Send a request every 10 seconds
 }
